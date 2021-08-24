@@ -1,0 +1,40 @@
+{% extends "template.html" %}
+
+{% block content %}
+    <div class="todo">
+        <div class="header">
+            <h1>ToDo list</h1>
+        </div>
+        <div class="list">
+            <ol class="today">
+                {% for date in all_date %}
+                    <p>{{ date }}</p>
+                    {% for Todo in all_todo %}
+                        {% if date == Todo.deadline %}
+                            <li>
+                                <div class="text">
+                                    <h4>{{ Todo.title }}</h4>
+                                    <p>{{ Todo.description }}</p>
+                                </div>
+                                <div class="remove">
+                                    <a href="{% url "delete" Todo.id %}">Remove</a>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </ol>
+        </div>
+        <div class="add">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="box">
+                    {{ form.title }}
+                    {{ form.deadline }}
+                    {{ form.description }}
+                </div>
+                <button type="submit">Add</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
